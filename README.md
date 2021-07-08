@@ -9,5 +9,5 @@
 * Day 26,27,28 - [Project 4 (Better-Rest)](https://github.com/gokulnair2001/100-Days-of-SwiftUI/tree/master/Better%20Rest)
 * 29,30,31 - [Project 5 (Word Scramble)](https://github.com/gokulnair2001/100-Days-of-SwiftUI/tree/master/Word%20Scramble)
 * 32,33,34 - [Project 6 (Animations)](https://github.com/gokulnair2001/100-Days-of-SwiftUI/tree/master/Animations)
-* 35 - Milestone
+* 35 - [Milestone Challenge](https://github.com/gokulnair2001/100-Days-of-SwiftUI/tree/master/Edutainment)
 * 

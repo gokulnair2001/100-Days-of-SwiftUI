@@ -291,6 +291,7 @@
 				DEVELOPMENT_TEAM = GJM8829Q7N;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Unit Converter/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -312,6 +313,7 @@
 				DEVELOPMENT_TEAM = GJM8829Q7N;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Unit Converter/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

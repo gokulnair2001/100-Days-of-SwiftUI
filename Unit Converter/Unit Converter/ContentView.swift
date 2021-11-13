@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var inputTemperature = ""
+    @State private var inputDistance:Float = 0.0
     @State private var selectedInputUnit = 0
     @State private var selectedOutputUnit = 1
     private var outputTemperature = ""
@@ -18,7 +18,7 @@ struct ContentView: View {
     var outputResult: Float {
         let selectedOutputUnit = units[selectedOutputUnit]
         let selectedInputUnit = units[selectedInputUnit]
-        let input = Float(inputTemperature) ?? 0
+        let input = inputDistance
         var finalResult = Float()
         
         switch (selectedInputUnit, selectedOutputUnit) {
@@ -65,7 +65,7 @@ struct ContentView: View {
         NavigationView {
             Form {
                 Section {
-                    TextField("Enter length \(units[selectedInputUnit])", text: $inputTemperature)
+                    TextField("Enter length \(units[selectedInputUnit])", value: $inputDistance, format: .number)
                     Picker("Select input unit", selection: $selectedInputUnit){
                         ForEach(0..<units.count){
                             Text("\(units[$0])")

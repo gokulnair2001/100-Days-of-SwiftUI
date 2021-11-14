@@ -17,8 +17,11 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [.red, .black]), startPoint: .bottom, endPoint: .top).edgesIgnoringSafeArea(.all)
-            VStack(spacing: 30) {
+            AngularGradient(gradient: Gradient(colors: [.red, .green, .yellow, .blue, .purple, .red]), center: .center)
+                .edgesIgnoringSafeArea(.all)
+
+            VStack(spacing: 40) {
+                Spacer()
                 VStack {
                     Text("Tap the flag of")
                         .bold()
@@ -39,6 +42,7 @@ struct ContentView: View {
                 }
                 Spacer()
             }
+            
         }.alert(isPresented: $showingScore, content: {
             Alert(title: Text(scoreTitle), message: Text("Your score is \(score)"), dismissButton: .default(Text("Continue")){
                 self.askQuestions()

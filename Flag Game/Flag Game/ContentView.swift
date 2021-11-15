@@ -17,8 +17,14 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            AngularGradient(gradient: Gradient(colors: [.red, .green, .yellow, .blue, .purple, .red]), center: .center)
-                .edgesIgnoringSafeArea(.all)
+           // AngularGradient(gradient: Gradient(colors: [.red, .green, .yellow, .blue, .purple, .red]), center: .center)
+              //  .edgesIgnoringSafeArea(.all)
+            
+            RadialGradient(stops: [
+                .init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.3),
+                .init(color: Color(red: 0.76, green: 0.15, blue: 0.3), location: 0.26)
+            ], center: .top, startRadius: 200, endRadius: 700)
+                .ignoresSafeArea()
 
             VStack(spacing: 40) {
                 Spacer()
@@ -41,7 +47,15 @@ struct ContentView: View {
                     })
                 }
                 Spacer()
+                
+                Text("Score: \(score)")
+                    //.font(.footnote)
+                    .bold()
             }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(.ultraThinMaterial)
+            
             
         }.alert(isPresented: $showingScore, content: {
             Alert(title: Text(scoreTitle), message: Text("Your score is \(score)"), dismissButton: .default(Text("Continue")){

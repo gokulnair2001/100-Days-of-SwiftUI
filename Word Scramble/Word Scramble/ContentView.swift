@@ -7,42 +7,62 @@
 
 import SwiftUI
 
+//struct ContentView: View {
+
 struct ContentView: View {
     
     @State private var usedWords = [String]()
-    @State private var newWord = ""
     @State private var rootWord = ""
-    @State private var score = Int()
+    @State private var newWord = ""
+    @State private var score = 0
     
     @State private var errorTitle = ""
-    @State private var errorMessage = ""
-    @State private var showError = false
+    @State private var errorMessage  = ""
+    @State private var showingError = false
     
     var body: some View {
         NavigationView{
-            VStack{
-                TextField("Enter word", text: $newWord, onCommit: addNewWord)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .autocapitalization(.none)
-                    .padding()
-                List(usedWords, id: \.self){
-                    Text($0)
-                       Spacer()
-                    Image(uiImage: UIImage(systemName: "\($0.count).circle")!)
-                        .renderingMode(.original)
+            VStack {
+                List{
+                    Section{
+                        TextField("Enter your word", text: $newWord)
+                            .autocapitalization(.none)
+                    }
+                    Section{
+                        ForEach(usedWords, id: \.self){ word in
+                            HStack {
+                                Image(systemName: "\(word.count).circle")
+                                Text(word)
+                            }
+                        }
+                    }
                 }
-                Text("Score:\(score)")
-                    .font(.headline)
+                
+                Text("Score: \(score)").bold()
             }
             .navigationTitle(rootWord)
-            .navigationBarItems(trailing: Button(action: startGame){
-                Text("ReStart")
-            })
+            .onSubmit {
+                addNewWord()
+            }
             .onAppear(perform: startGame)
-            .alert(isPresented: $showError, content: {
-                Alert(title: Text(errorTitle), message: Text(errorMessage), dismissButton: .default(Text("Ok")))
-            })
+            .alert(errorTitle, isPresented: $showingError){
+                Button("ok", role: .cancel){ }
+            } message: {
+                Text(errorMessage)
+            }
         }
+    }
+    
+    func startGame() {
+        if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt"){
+            if let startWord = try? String(contentsOf: startWordsURL){
+                let allWords = startWord.components(separatedBy: "\n")
+                rootWord = allWords.randomElement() ?? "silkworm"
+                return
+            }
+        }
+        
+        fatalError("Could not load start.txt from bundle")
     }
     
     func isOriginal(word: String) -> Bool {
@@ -50,90 +70,62 @@ struct ContentView: View {
     }
     
     func isPossible(word: String) -> Bool {
-        var tempWord = rootWord.lowercased()
+        var tempWord = rootWord
         
         for letter in word {
-            if let pos =  tempWord.firstIndex(of: letter){
+            if let pos = tempWord.firstIndex(of: letter){
                 tempWord.remove(at: pos)
             }else {
                 return false
             }
         }
+        
         return true
     }
     
     func isReal(word: String) -> Bool {
         let checker = UITextChecker()
         let range = NSRange(location: 0, length: word.utf16.count)
-        let misSpelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
-        return misSpelledRange.location == NSNotFound
-    }
-    
-    func startGame() {
-        if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt"){
-            if let startWords = try? String(contentsOf: startWordsURL) {
-                let allWords = startWords.components(separatedBy: "\n")
-                rootWord = allWords.randomElement() ?? "Apple"
-                usedWords.removeAll()
-                newWord = ""
-                score = 0
-                return
-            }
-        }
-        fatalError("Could not load star.txt")
-    }
-    
-    func validWordLength(word: String) -> Bool {
-        if newWord.count >= 3 {
-            return true
-        }else {
-            return false
-        }
-    }
-    
-    func wordError(title: String, message: String) {
-        errorTitle = title
-        errorMessage = message
-        showError = true
+        let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
+        
+        return misspelledRange.location == NSNotFound
     }
     
     func addNewWord() {
-        let answer = newWord.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard  answer.count>0 else {
-            return
-        }
+        let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        // Check word count
+        guard answer.count > 0 else {return}
         
         guard isOriginal(word: answer) else {
-            wordError(title: "Word used already", message: "Be more original")
-            newWord = ""
+            wordError(title: "Word used already", message: "be more original")
             return
         }
         
         guard isPossible(word: answer) else {
-            wordError(title: "Word not recognised", message: "cant make up words")
-            newWord = ""
+            wordError(title: "Word not possible", message: "This word cant be formed using \(rootWord)")
             return
         }
         
         guard isReal(word: answer) else {
-            wordError(title: "Its not possible", message: "That isn't real!")
-            newWord = ""
+            wordError(title: "Not a valid word", message: "Consider writing some valid words")
             return
         }
         
-        guard validWordLength(word: answer) == true else {
-            wordError(title: "Not a valid word", message: "min word length is 4")
-            newWord = ""
-            return
+        withAnimation {
+            usedWords.insert(answer, at: 0)
         }
-        
-        usedWords.insert(newWord, at: 0)
-        score = score + newWord.count
         newWord = ""
+        score = score + 1
+    }
+    
+    func wordError(title: String, message: String) {
+        errorMessage = message
+        errorTitle = title
+        showingError = true
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct Scrambler_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }

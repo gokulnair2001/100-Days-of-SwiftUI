@@ -54,12 +54,14 @@ struct ContentView: View {
         }
     }
     
+    // Setting Default wakeUp time
     static var defaultWakeUpTime: Date {
         var dateComponent = DateComponents()
         dateComponent.hour = 7
         dateComponent.minute = 0
         return Calendar.current.date(from: dateComponent) ?? Date()
     }
+    
     func calculateBedTime() {
         
         do {

@@ -11,4 +11,4 @@
 * Day 32,33,34 - [Project 6 (Animations)](https://github.com/gokulnair2001/100-Days-of-SwiftUI/tree/master/Animations)
 * Day 35 - [Milestone Challenge](https://github.com/gokulnair2001/100-Days-of-SwiftUI/tree/master/Edutainment)
 * Day 36,37,38 - [iExpense](https://github.com/gokulnair2001/100-Days-of-SwiftUI/tree/master/iExpense)
-* Day 39,40,41,42 - [MoonShot](https://github.com/gokulnair2001/100-Days-of-SwiftUI/tree/master/MoonShot)
+* Day 39,40,41,42 - [MoonShot](https://github.com/gokulnair2001/100-Days-of-SwiftUI/tree/master/Moonshot)
